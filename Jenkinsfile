@@ -2,11 +2,11 @@ pipeline {
     agent {
         label 'Dev'
     }
-    params {
+    parameters {
         string(name: 'LastName', defaultValue: 'Poonamalli')
     }
-    Environment {
-        Name= 'sandeep'
+    environment {
+        Name = 'sandeep'
     }
 
     tools {
@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean package'
-                echo "Hello,${Name} ${params.LastName}"
+                echo "Hello, ${env.Name} ${params.LastName}"
             }
             post {
                 success {
