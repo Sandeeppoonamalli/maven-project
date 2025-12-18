@@ -64,15 +64,12 @@ pipeline {
                 label 'Dev'
             }
             steps {
-                sh 'sudo mkdir -p /var/www/html/'
-                sh 'sudo chown -R $(whoami) /var/www/html/'
-                dir("/var/www/html/") {
+                dir("${WORKSPACE}/deployment") {
                     unstash "maven-build"
+                    sh """
+                    jar -xvf *.war
+                    """
                 }
-                sh """
-                cd /var/www/html/
-                jar -xvf *.war
-                """
             }
         }
     }
