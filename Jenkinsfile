@@ -82,6 +82,10 @@ pipeline {
                 label 'Prod'
             }
             steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    echo 'Waiting for approval to deploy to production...'
+                    input message: 'Approve deployment to production?', ok: 'Deploy'
+                }
                 dir("${WORKSPACE}/deployment") {
                     unstash "maven-build"
                     sh """
