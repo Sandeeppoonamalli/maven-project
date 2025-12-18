@@ -17,6 +17,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                file = load 'script.groovy'
+                script.hello()
                 sh 'mvn clean package -DskipTests=true'
                 
             }
@@ -56,12 +58,28 @@ pipeline {
             }
             
         }
-        stage('Deploy') {
+        stage('Deploy_Dev') {
             when {
                 expression { params.select_enviornment == 'dev' }
             }
             agent {
                 label 'Dev'
+            }
+            steps {
+                dir("${WORKSPACE}/deployment") {
+                    unstash "maven-build"
+                    sh """
+                    jar -xvf *.war
+                    """
+                }
+            }
+        }
+        stage('Deploy_Prod') {
+            when {
+                expression { params.select_enviornment == 'prod' }
+            }
+            agent {
+                label 'Prod'
             }
             steps {
                 dir("${WORKSPACE}/deployment") {
