@@ -64,7 +64,8 @@ pipeline {
                 label 'Dev'
             }
             steps {
-                dir("var/www/html/") {
+                sh 'mkdir -p /var/www/html/'
+                dir("/var/www/html/") {
                     unstash "maven-build"
                 }
                 sh """
