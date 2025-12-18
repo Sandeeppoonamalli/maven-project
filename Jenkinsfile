@@ -64,7 +64,8 @@ pipeline {
                 label 'Dev'
             }
             steps {
-                sh 'mkdir -p /var/www/html/'
+                sh 'sudo mkdir -p /var/www/html/'
+                sh 'sudo chown -R $(whoami) /var/www/html/'
                 dir("/var/www/html/") {
                     unstash "maven-build"
                 }
