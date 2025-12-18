@@ -59,19 +59,18 @@ pipeline {
         stage('Deploy') {
             when {
                 expression { params.select_enviornment == 'dev' }
-                beforeAgent true
-                agent {
-                    label 'Dev'
+            }
+            agent {
+                label 'Dev'
+            }
+            steps {
+                dir("var/www/html/") {
+                    unstash "maven-build"
                 }
-                steps {
-                    dir("var/www/html/") {
-                        unstash "maven-build"
-                    }
-                    sh """
-                    cd /var/www/html/
-                    jar -xvf *.war
-                    """
-                }
+                sh """
+                cd /var/www/html/
+                jar -xvf *.war
+                """
             }
         }
     }
