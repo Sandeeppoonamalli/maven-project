@@ -17,8 +17,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                file = load 'script.groovy'
-                script.hello()
+                script {
+                    def file = load 'script.groovy'
+                    file.hello()
+                }
                 sh 'mvn clean package -DskipTests=true'
                 
             }
